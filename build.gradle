@@ -17,6 +17,8 @@ apply plugin: 'idea'
 apply plugin: 'org.springframework.boot'
 apply plugin: "nebula.ospackage"
 
+version = '0.1.0'
+
 jar {
     baseName = 'gs-spring-boot'
     version =  '0.1.0'
@@ -36,12 +38,16 @@ dependencies {
 
 // Nebula OS Package Configuration
 
+springBoot{
+    executable = true
+}
+
 // OS Package plugin configuration
 ospackage {
     packageName = "gs-spring-boot"
 
     // Uses the main project version
-    version = "0.1.0"
+    version = "${project.version}"
 
     /* Could be anything - in our production builds,
        this is set to the git commit hash */
@@ -82,9 +88,8 @@ ospackage {
 }
 
 buildDeb {
-    user "boot"
-    permissionGroup "boot"
+    user "spring"
+    permissionGroup "spring"
     directory("/opt/local/gs-spring-boot/log", 0755)
-    link("/etc/init.d/gs-spring-boot", "/opt/local/gs-spring-boot/bin/gs-spring-boot.jar")
     link("/opt/local/gs-spring-boot/bin/gs-spring-boot.conf", "/opt/local/gs-spring-boot/conf/gs-spring-boot.conf")
 }

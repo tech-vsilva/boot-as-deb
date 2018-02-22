@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 
-chown boot:boot /opt/local/gs-spring-boot/log
+chown spring:spring /opt/local/gs-spring-boot/log

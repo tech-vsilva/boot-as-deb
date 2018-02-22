@@ -76,6 +76,9 @@ Vagrant.configure("2") do |config|
     #sudo apt-get -qqy install oracle-java8-installer > /dev/null
 
     dpkg -i /tmp/build/distributions/*.deb
+    sudo systemctl enable /opt/local/gs-spring-boot/conf/gs-spring-boot.service
+    sudo systemctl start gs-spring-boot
+    sudo systemctl status gs-spring-boot
 
   SHELL
 end
