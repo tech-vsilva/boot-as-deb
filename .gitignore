@@ -1,7 +1,7 @@
 
-# Created by https://www.gitignore.io/api/java,gradle,vagrant,intellij
+# Created by https://www.gitignore.io/api/java,gradle,vagrant,intellij+all
 
-### Intellij ###
+### Intellij+all ###
 # Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion, Android Studio and Webstorm
 # Reference: https://intellij-support.jetbrains.com/hc/en-us/articles/206544839
 
@@ -9,6 +9,14 @@
 .idea/**/workspace.xml
 .idea/**/tasks.xml
 .idea/dictionaries
+
+boot-as-deb.iml
+boot-as-deb.ipr
+boot-as-deb.iws
+
+boot-as-deb_main.iml
+boot-as-deb_test.iml
+
 
 # Sensitive or high-churn files:
 .idea/**/dataSources/
@@ -55,16 +63,11 @@ crashlytics.properties
 crashlytics-build.properties
 fabric.properties
 
-### Intellij Patch ###
-# Comment Reason: https://github.com/joeblau/gitignore.io/issues/186#issuecomment-215987721
+### Intellij+all Patch ###
+# Ignores the whole idea folder
+# See https://github.com/joeblau/gitignore.io/issues/186 and https://github.com/joeblau/gitignore.io/issues/360
 
-# *.iml
-# modules.xml
-# .idea/misc.xml
-# *.ipr
-
-# Sonarlint plugin
-.idea/sonarlint
+.idea/
 
 ### Java ###
 # Compiled class file
@@ -111,4 +114,4 @@ gradle-app.setting
 # gradle/wrapper/gradle-wrapper.properties
 
 
-# End of https://www.gitignore.io/api/java,gradle,vagrant,intellij
+# End of https://www.gitignore.io/api/java,gradle,vagrant,intellij+all
