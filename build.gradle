@@ -1,9 +1,13 @@
 buildscript {
+    ext {
+        osPackageVersion = "4.7.4"
+    }
     repositories {
         mavenCentral()
     }
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:1.5.10.RELEASE")
+        classpath "com.netflix.nebula:gradle-ospackage-plugin:${osPackageVersion}"
     }
 }
 
@@ -11,6 +15,7 @@ apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'idea'
 apply plugin: 'org.springframework.boot'
+apply plugin: "nebula.ospackage"
 
 jar {
     baseName = 'gs-spring-boot'
@@ -29,3 +34,57 @@ dependencies {
     testCompile("junit:junit")
 }
 
+// Nebula OS Package Configuration
+
+// OS Package plugin configuration
+ospackage {
+    packageName = "gs-spring-boot"
+
+    // Uses the main project version
+    version = "0.1.0"
+
+    /* Could be anything - in our production builds,
+       this is set to the git commit hash */
+    release = 1
+
+    os = LINUX
+    type = BINARY
+//    arch = NOARCH
+
+    /* Our install scripts - see the full code for examples.
+       They usually do simple prep/cleanup tasks */
+    preInstall file("scripts/deb/preInstall.sh")
+    postInstall file("scripts/deb/postInstall.sh")
+    preUninstall file("scripts/deb/preUninstall.sh")
+    postUninstall file("scripts/deb/postUninstall.sh")
+
+    // Sets our working directory and permissions, basically
+    into "/opt/local/gs-spring-boot"
+    user "gs-spring-boot"
+    permissionGroup "gs-spring-boot"
+
+    // Copy the actual .jar file
+    from(jar.outputs.files) {
+        // Strip the version from the jar filename
+        rename { String fileName ->
+            fileName.replace("-${project.version}", "")
+        }
+        fileMode 0500
+        into "bin"
+    }
+
+    // Copy the config files
+    from("install/unix/conf") {
+        fileType CONFIG | NOREPLACE
+        fileMode 0754
+        into "conf"
+    }
+}
+
+buildDeb {
+    user "boot"
+    permissionGroup "boot"
+    directory("/opt/local/gs-spring-boot/log", 0755)
+    link("/etc/init.d/gs-spring-boot", "/opt/local/gs-spring-boot/bin/gs-spring-boot.jar")
+    link("/opt/local/gs-spring-boot/bin/gs-spring-boot.conf", "/opt/local/gs-spring-boot/conf/gs-spring-boot.conf")
+}
